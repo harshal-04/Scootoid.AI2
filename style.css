@@ -98,6 +98,66 @@ transform: translateX(0);
 }
 }
 
+/* Animation Classes */
+.fade-in-up {
+animation: fadeInUp 0.6s ease;
+}
+
+.fade-in-left {
+animation: fadeInLeft 0.6s ease;
+}
+
+.fade-in-right {
+animation: fadeInRight 0.6s ease;
+}
+
+@keyframes pulse {
+0% {
+transform: scale(1);
+}
+50% {
+transform: scale(1.05);
+}
+100% {
+transform: scale(1);
+}
+}
+
+.pulse {
+animation: pulse 2s infinite;
+}
+
+/* Typewriter Effect */
+.typewriter-heading {
+border-right: 3px solid var(--primary);
+white-space: nowrap;
+overflow: hidden;
+animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+from { width: 0; }
+to { width: 100%; }
+}
+
+@keyframes blink-caret {
+from, to { border-color: transparent; }
+50% { border-color: var(--primary); }
+}
+
+/* Workflow Animation States */
+.workflow-container.loading {
+opacity: 0.7;
+}
+
+.workflow-container.completed {
+animation: fadeInUp 0.5s ease;
+}
+
+.workflow-container.completed .workflow-step.completed {
+animation: fadeInUp 0.3s ease;
+}
+
 @keyframes float {
 0%, 100% {
 transform: translateY(0);
@@ -459,7 +519,8 @@ flex: 1;
 padding-right: 30px;
 }
 
-.hero-left h1 {
+.hero-left h1,
+.hero-left h3 {
 font-size: 2.8rem;
 color: var(--primary);
 margin-bottom: 20px;
@@ -2141,7 +2202,6 @@ position: relative;
 z-index: 1001;
 }
 
-text
 .header-inner {
     position: relative;
 }
@@ -2189,7 +2249,6 @@ font-size: 0.7rem;
 padding: 3px 8px;
 }
 
-text
 #workflow-visualization .step-icon {
     width: 40px;
     height: 40px;
@@ -2215,7 +2274,6 @@ h1 {
 font-size: 2.8rem;
 }
 
-text
 h2 {
     font-size: 2.2rem;
 }
@@ -2255,7 +2313,6 @@ text-align: center;
 padding: 70px 15px;
 }
 
-text
 .hero-left {
     padding-right: 0;
     margin-bottom: 40px;
@@ -2480,7 +2537,6 @@ h1 {
 font-size: 2.2rem;
 }
 
-text
 h2 {
     font-size: 1.8rem;
 }
@@ -2510,6 +2566,19 @@ h2 {
 .badge {
     font-size: 12px;
     padding: 6px 12px;
+}
+
+.btn {
+    padding: 16px 32px;
+    font-size: 16px;
+    min-height: 48px;
+}
+
+.nav a {
+    padding: 12px 20px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
 }
 
 .steps {
@@ -2558,7 +2627,6 @@ h2 {
 padding: 12px;
 }
 
-text
 #use-cases .card-button .btn {
     font-size: 14px;
     padding: 8px 16px;
@@ -2589,7 +2657,6 @@ transition-duration: 0.01ms !important;
 scroll-behavior: auto !important;
 }
 
-text
 .progress-bar,
 .workflow-step,
 .flow-arrow,
@@ -2629,5 +2696,10 @@ text
 #cta h2::after,
 #why h2::after {
     transform: scaleX(1) !important;
+}
+
+.typewriter-heading {
+    border-right: none !important;
+    animation: none !important;
 }
 }
