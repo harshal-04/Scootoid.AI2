@@ -39,7 +39,7 @@
       <a href="#tutorial">Tutorial</a>
       <a href="#cta" class="access-link">Get Started</a>
     </nav>
-    <button class="mobile-menu-btn">
+    <button class="mobile-menu-btn" aria-expanded="false" aria-label="Toggle navigation menu">
       <i class="fas fa-bars"></i>
     </button>
   </div>
@@ -202,7 +202,7 @@
             </div>
           </div>
           <div class="step-text">
-            <div class="step-title">FE analysis </div>
+            <div class="step-title">FEA Analysis</div>
             <div class="step-description">AI-powered process</div>
           </div>
         </div>
@@ -222,7 +222,7 @@
           </div>
           <div class="step-text">
             <div class="step-title">Post Processing</div>
-            <div class="step-description">AS per code requirements</div>
+            <div class="step-description">As per code requirements</div>
           </div>
         </div>
 
@@ -240,7 +240,7 @@
             </div>
           </div>
           <div class="step-text">
-            <div class="step-title">Report Gen</div>
+            <div class="step-title">Report Generation</div>
             <div class="step-description">Automated FE Report</div>
           </div>
         </div>
@@ -278,7 +278,16 @@
         
         <div class="stat-item">
           <div class="stat-number-container">
-            <span class="stat-number" id="stat2">0</span>
+            <span class="stat-number" id="stat1">0</span>
+            <span class="stat-suffix">%</span>
+          </div>
+          <div class="stat-label">Time Savings</div>
+          <div class="stat-description">Automated processing</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-number-container">
+            <span class="stat-number" id="stat2">100</span>
             <span class="stat-suffix">%</span>
           </div>
           <div class="stat-label">ASME Compliant</div>
@@ -287,7 +296,7 @@
         
         <div class="stat-item">
           <div class="stat-number-container">
-            <span class="stat-number" id="stat3">0</span>
+            <span class="stat-number" id="stat3">24</span>
             <span class="stat-suffix">/7</span>
           </div>
           <div class="stat-label">Available</div>
@@ -452,18 +461,15 @@
   <div class="section-inner">
     <h2>Tutorial</h2>
     <div class="video-wrap">
-      <video id="tutorial-video" width="640" height="360" controls>
-
-
-        <!-- New local video -->
-        <source src="file:///C:/Users/HARSHAL/Desktop/web%20paeg/video/Complete%20user%20manual.mp4.mp4" type="video/mp4">
-
+      <video id="tutorial-video" width="640" height="360" controls poster="https://via.placeholder.com/640x360.png?text=Tutorial+Video">
+        <!-- Video source will be added when available -->
+        <source src="" type="video/mp4">
         Your browser does not support the video tag.
       </video>
       <button class="play-button" aria-label="Play Video">&#9658;</button>
     </div>
     <p class="video-description">
-      Watch our tutorial to learn how to use Scootoid.AI for your engineering analysis needs.
+      Learn how to upload your PV Elite PDF and get automated FEA reports with Scootoid.AI's step-by-step tutorial.
     </p>
   </div>
 </section>
@@ -475,18 +481,20 @@
 <!-- CTA Section -->
 <section id="cta">
   <div class="section-inner">
-    <h2>Start your Journey from Weeks to Hours</h2>
+    <h2>Ready to Transform Your Engineering Workflow?</h2>
     
     <!-- Highlighted text with better styling -->
     <div class="highlighted-box">
-      For FE report
+      Get your first FEA report in hours, not weeks
     </div>
 
     <div class="app-buttons">
-      <a href="https://scootoid-ai.web.app/login" target="_blank" class="btn big">
-        Log on to Scootoid.AI →
+      <a href="https://scootoid-ai.web.app/login" target="_blank" class="btn big pulse">
+        Start Your Analysis Now →
       </a>
-    </div>  
+    </div>
+    
+    <p class="cta-subtitle">No setup required • Pay per report • 100% ASME compliant</p>
   </div>
 </section>
 

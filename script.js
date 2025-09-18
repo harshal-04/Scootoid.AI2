@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initCardHoverEffects();
   initWorkflowAnimation();
   initUseCaseDemos();
+  initTypewriter();
 });
 
 
@@ -121,34 +122,38 @@ function initBanner() {
 
 
 // ======================
-// Buttons - FIXED VERSION
+// Buttons - ENHANCED VERSION
 // ======================
 function initButtons() {
   document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
-      
+
       // Only prevent default for buttons without valid href
       if (!href || href === '#' || href.startsWith('javascript:')) {
         e.preventDefault();
       }
-      
+
       // Only show loading animation for buttons that aren't external links
       if (!this.classList.contains('secondary') && (!href || href === '#')) {
         const originalText = this.innerHTML;
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
         this.classList.add('loading');
+        this.disabled = true;
 
         setTimeout(() => {
           this.innerHTML = originalText;
           this.classList.remove('loading');
+          this.disabled = false;
         }, 2000);
+      } else if (href && href !== '#') {
+        // Add a subtle loading state for external links
+        this.style.opacity = '0.7';
+        this.innerHTML += ' <i class="fas fa-external-link-alt"></i>';
       }
     });
   });
 }
-
-
 // ======================
 // Video Placeholder
 // ======================
@@ -163,7 +168,7 @@ function initVideoPlaceholder() {
 
 
 // ======================
-// Mobile Menu
+// Mobile Menu - ENHANCED
 // ======================
 function initMobileMenu() {
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -175,21 +180,36 @@ function initMobileMenu() {
     const icon = this.querySelector('i');
     icon.classList.toggle('fa-bars', !nav.classList.contains('active'));
     icon.classList.toggle('fa-times', nav.classList.contains('active'));
+
+    // Update aria-expanded for accessibility
+    this.setAttribute('aria-expanded', nav.classList.contains('active'));
   });
 
+  // Close menu when clicking on a link
   nav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       nav.classList.remove('active');
       mobileMenuBtn.querySelector('i').classList.remove('fa-times');
       mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
     });
   });
 
+  // Close menu when clicking outside
   document.addEventListener('click', function(e) {
     if (!nav.contains(e.target) && !mobileMenuBtn.contains(e.target) && nav.classList.contains('active')) {
       nav.classList.remove('active');
       mobileMenuBtn.querySelector('i').classList.remove('fa-times');
       mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Keyboard accessibility
+  mobileMenuBtn.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.click();
     }
   });
 }
@@ -237,14 +257,14 @@ function initCardHoverEffects() {
 
 
 // ======================
-// Workflow Animation
+// Workflow Animation - ENHANCED
 // ======================
 function initWorkflowAnimation() {
   let currentStep = 0;
   let animationInterval;
   let isAnimating = false;
   const totalSteps = 6;
-  const stepDuration = 1200;
+  const stepDuration = 1500; // Slightly faster
 
   const progressBar = document.getElementById('progressBar');
   const progressPercentage = document.getElementById('progressPercentage');
@@ -253,13 +273,24 @@ function initWorkflowAnimation() {
 
   if (!progressBar || !progressPercentage || !steps.length) return;
 
+  // Add loading state initially
+  const workflowContainer = document.querySelector('.workflow-container');
+  if (workflowContainer) {
+    workflowContainer.classList.add('loading');
+  }
+
   function startAnimation() {
     if (isAnimating) return;
     isAnimating = true;
 
+    // Remove loading state
+    if (workflowContainer) {
+      workflowContainer.classList.remove('loading');
+    }
+
     if (currentStep >= totalSteps) {
       resetAnimation();
-      setTimeout(() => { startAnimation(); }, 800);
+      setTimeout(() => { startAnimation(); }, 1000);
       return;
     }
 
@@ -289,7 +320,15 @@ function initWorkflowAnimation() {
           steps[totalSteps - 1].classList.add('completed');
           isAnimating = false;
           animateCounters();
-          setTimeout(() => { resetAnimation(); startAnimation(); }, 1500);
+          setTimeout(() => {
+            // Add a brief pause before resetting
+            workflowContainer.classList.add('completed');
+            setTimeout(() => {
+              resetAnimation();
+              workflowContainer.classList.remove('completed');
+              startAnimation();
+            }, 2000);
+          }, stepDuration);
         }, stepDuration);
       }
     } else {
@@ -308,9 +347,13 @@ function initWorkflowAnimation() {
   }
 
   function animateCounters() {
-    animateCounter('stat1', 45, 1500);
-    animateCounter('stat2', 100, 1500);
-    animateCounter('stat3', 24, 1500);
+    // Add a small delay before starting counters
+    setTimeout(() => {
+      animateCounter('stat1', 90, 2000);
+      animateCounter('stat2', 100, 2000);
+      animateCounter('stat3', 24, 2000);
+      animateCounter('stat4', 0, 2000);
+    }, 500);
   }
 
   function animateCounter(elementId, finalValue, duration) {
@@ -354,6 +397,48 @@ function initUseCaseDemos() {
 
 
 // ======================
+// Typewriter Effect
+// ======================
+function initTypewriter() {
+  const typewriterElement = document.querySelector('.typewriter-heading');
+  if (!typewriterElement) return;
+
+  // Check for reduced motion preference
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) {
+    typewriterElement.style.borderRight = 'none';
+    return;
+  }
+
+  const text = typewriterElement.getAttribute('data-typewriter') || typewriterElement.textContent;
+  const highlightText = '90% Faster.';
+  const textWithoutHighlight = text.replace(highlightText, '').trim();
+  
+  typewriterElement.textContent = '';
+  typewriterElement.style.borderRight = '3px solid var(--primary)';
+  
+  let i = 0;
+  const typeWriter = () => {
+    if (i < textWithoutHighlight.length) {
+      typewriterElement.textContent += textWithoutHighlight.charAt(i);
+      i++;
+      setTimeout(typeWriter, 100);
+    } else {
+      // Add the highlight span
+      typewriterElement.innerHTML = textWithoutHighlight + ' <span class="highlight">' + highlightText + '</span>';
+      // Keep the blinking cursor
+      setTimeout(() => {
+        typewriterElement.style.borderRight = 'none';
+      }, 1000);
+    }
+  };
+  
+  // Start typing after a short delay
+  setTimeout(typeWriter, 500);
+}
+
+
+// ======================
 // Utility
 // ======================
 function debounce(func, wait, immediate) {
@@ -373,20 +458,30 @@ function debounce(func, wait, immediate) {
 const video = document.getElementById('tutorial-video');
 const playButton = document.querySelector('.play-button');
 
-playButton.addEventListener('click', () => {
-  if(video.paused) {
-    video.play();
-    playButton.classList.add('hidden');
-  } else {
-    video.pause();
+if (playButton && video) {
+  playButton.addEventListener('click', () => {
+    if(video.paused) {
+      video.play().catch(e => {
+        console.log('Video play failed:', e);
+        alert('Video playback is not available. Please check your video source.');
+      });
+      playButton.classList.add('hidden');
+    } else {
+      video.pause();
+      playButton.classList.remove('hidden');
+    }
+  });
+
+  video.addEventListener('pause', () => {
     playButton.classList.remove('hidden');
-  }
-});
+  });
 
-video.addEventListener('pause', () => {
-  playButton.classList.remove('hidden');
-});
+  video.addEventListener('ended', () => {
+    playButton.classList.remove('hidden');
+  });
 
-video.addEventListener('ended', () => {
-  playButton.classList.remove('hidden');
-});
+  video.addEventListener('error', () => {
+    console.log('Video loading error');
+    playButton.style.display = 'none';
+  });
+}
